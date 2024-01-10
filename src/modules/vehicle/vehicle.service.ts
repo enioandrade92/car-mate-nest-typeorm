@@ -75,7 +75,7 @@ export class VehicleService {
         }
     }
 
-    async findAll(filters: FilterVehicleDto) {
+    async findAll(filters?: FilterVehicleDto) {
         try {
             return await this.vehicleCustomRepository.searchVehicle(filters);
         } catch (error) {

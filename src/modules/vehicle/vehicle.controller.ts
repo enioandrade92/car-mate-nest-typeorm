@@ -23,7 +23,7 @@ export class VehicleController {
     }
 
     @Get()
-    async findAll(@Query() filters: FilterVehicleDto) {
+    async findAll(@Query() filters?: FilterVehicleDto) {
         return this.vehicleService.findAll(filters);
     }
 

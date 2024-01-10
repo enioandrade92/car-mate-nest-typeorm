@@ -15,7 +15,7 @@ export class VehicleRepository extends Repository<Vehicle> {
         );
     }
 
-    async searchVehicle(filters: FilterVehicleDto) {
+    async searchVehicle(filters?: FilterVehicleDto) {
         const query = this.vehicleRepository.createQueryBuilder('vehicles');
         const keysAndValues = Object.entries(filters);
         if (keysAndValues.length) {
