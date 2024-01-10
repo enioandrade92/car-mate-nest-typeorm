@@ -4,6 +4,7 @@ import { VehicleModule } from './modules/vehicle/vehicle.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSource } from './lib/typeorm/database/data-source';
 import { ConfigModule } from '@nestjs/config';
+import { VehicleAssignmentModule } from './modules/vehicle-assignment/vehicle-assignment.module';
 @Module({
     imports: [
         ConfigModule.forRoot(),
@@ -12,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
         }),
         DriverModule,
         VehicleModule,
+        VehicleAssignmentModule,
     ],
 })
 export class AppModule { }
