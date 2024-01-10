@@ -10,7 +10,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Driver } from './entities/driver.entity';
 import { Repository } from 'typeorm';
 import { DriverRepository } from './repository/driver.repository';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { FilterFindDto } from './dto/filter-find.dto';
 
@@ -57,11 +56,12 @@ export class DriverService {
             if (!driver) {
                 throw new BadRequestException(`Not found driver: ${driver}`);
             }
-            await this.repositoryDriver.update(id, updateDriver);
-            this.logger.log(`Updated successfully the Driver: ${driver.name}`);
-            return await this.repositoryDriver.findOne({
-                where: { id },
+            const updatedDriver = await this.repositoryDriver.save({
+                ...driver,
+                ...updateDriver,
             });
+            this.logger.log(`Updated successfully the Driver: ${driver.id}`);
+            return updatedDriver;
         } catch (error) {
             this.logger.error(
                 `Failed to update the driver. Error: ${error.message}.`,
@@ -112,7 +112,20 @@ export class DriverService {
         }
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} driver`;
+    async remove(id: number) {
+        try {
+            await this.repositoryDriver.softDelete(id);
+            const message = `Deleted successfully the driver: ${id}`;
+            this.logger.log(message);
+            return message;
+        } catch (error) {
+            this.logger.error(
+                `Failed to delete the driver. Error: ${error.message}.`,
+            );
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
     }
 }
