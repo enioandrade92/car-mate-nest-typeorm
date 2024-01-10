@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { DriverService } from './driver.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
-import { FilterFindDto } from './dto/filter-find.dto';
+import { FilterDriverDto } from './dto/filter-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 
 @Controller('driver')
@@ -28,7 +28,7 @@ export class DriverController {
     }
 
     @Get()
-    findAll(@Query() queryString: FilterFindDto) {
+    findAll(@Query() queryString: FilterDriverDto) {
         return this.driverService.findAll(queryString);
     }
 

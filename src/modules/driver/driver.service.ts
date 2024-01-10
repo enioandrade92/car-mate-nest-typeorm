@@ -11,20 +11,20 @@ import { Driver } from './entities/driver.entity';
 import { Repository } from 'typeorm';
 import { DriverRepository } from './repository/driver.repository';
 import { UpdateDriverDto } from './dto/update-driver.dto';
-import { FilterFindDto } from './dto/filter-find.dto';
+import { FilterDriverDto } from './dto/filter-driver.dto';
 
 @Injectable()
 export class DriverService {
     private readonly logger = new Logger(DriverService.name);
     constructor(
         @InjectRepository(Driver)
-        private repositoryDriver: Repository<Driver>,
+        private driverRepository: Repository<Driver>,
         @InjectRepository(DriverRepository)
-        private customDriverRepository: DriverRepository,
+        private driverCustomRepository: DriverRepository,
     ) { }
     async create(createDriver: CreateDriverDto) {
         try {
-            const existDriver = await this.repositoryDriver.findOne({
+            const existDriver = await this.driverRepository.findOne({
                 where: { name: createDriver.name },
             });
             if (existDriver) {
@@ -32,7 +32,7 @@ export class DriverService {
                     `Already exists the driver: ${existDriver}`,
                 );
             }
-            const savedDriver = await this.repositoryDriver.save(createDriver);
+            const savedDriver = await this.driverRepository.save(createDriver);
             this.logger.log(
                 `Created successfully the Driver: ${savedDriver.name}`,
             );
@@ -50,13 +50,13 @@ export class DriverService {
 
     async update(id: number, updateDriver: UpdateDriverDto) {
         try {
-            const driver = await this.repositoryDriver.findOne({
+            const driver = await this.driverRepository.findOne({
                 where: { id },
             });
             if (!driver) {
                 throw new BadRequestException(`Not found driver: ${driver}`);
             }
-            const updatedDriver = await this.repositoryDriver.save({
+            const updatedDriver = await this.driverRepository.save({
                 ...driver,
                 ...updateDriver,
             });
@@ -73,10 +73,10 @@ export class DriverService {
         }
     }
 
-    async findAll(filter: FilterFindDto) {
+    async findAll(filter: FilterDriverDto) {
         try {
             const { name, ...paginate } = filter;
-            return await this.customDriverRepository.searchDriver(
+            return await this.driverCustomRepository.searchDriver(
                 name,
                 paginate,
             );
@@ -93,7 +93,7 @@ export class DriverService {
 
     async findOne(id: number) {
         try {
-            const driver = await this.repositoryDriver.findOne({
+            const driver = await this.driverRepository.findOne({
                 where: { id },
             });
             if (!driver) {
@@ -114,7 +114,7 @@ export class DriverService {
 
     async remove(id: number) {
         try {
-            await this.repositoryDriver.softDelete(id);
+            await this.driverRepository.softDelete(id);
             const message = `Deleted successfully the driver: ${id}`;
             this.logger.log(message);
             return message;
