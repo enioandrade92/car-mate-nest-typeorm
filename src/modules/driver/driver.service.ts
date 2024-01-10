@@ -29,7 +29,7 @@ export class DriverService {
             });
             if (existDriver) {
                 throw new BadRequestException(
-                    `Already exists the driver: ${existDriver}`,
+                    `Already exists the driver: ${existDriver.name}`,
                 );
             }
             const savedDriver = await this.driverRepository.save(createDriver);

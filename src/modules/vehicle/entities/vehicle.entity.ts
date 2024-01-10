@@ -3,9 +3,12 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
+    ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+import { VehicleAssignment } from '../../vehicle-assignment/entities/vehicle-assignment.entity';
 
 @Entity('vehicles')
 export class Vehicle {
@@ -32,4 +35,7 @@ export class Vehicle {
 
     @DeleteDateColumn({ default: null })
     deletedAt: Date;
+
+    @OneToMany(() => VehicleAssignment, (assignment) => assignment.vehicle)
+    assignments: VehicleAssignment[];
 }

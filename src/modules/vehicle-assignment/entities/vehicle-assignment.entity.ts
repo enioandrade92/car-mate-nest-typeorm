@@ -2,6 +2,8 @@ import {
     Column,
     Entity,
     JoinColumn,
+    ManyToOne,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,17 +17,15 @@ export class VehicleAssignment {
     @Column('text')
     reason: string;
 
-    @Column('date')
+    @Column('datetime')
     startDateAssignment: Date;
 
-    @Column('date', { default: null })
+    @Column('datetime', { default: null })
     endDateAssignment: Date;
 
-    @OneToOne(() => Vehicle)
-    @JoinColumn()
+    @ManyToOne(() => Vehicle, (vehicle) => vehicle.assignments)
     vehicle: Vehicle;
 
-    @OneToOne(() => Driver)
-    @JoinColumn()
+    @ManyToOne(() => Driver, (driver) => driver.assignments)
     driver: Driver;
 }
