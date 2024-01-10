@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { VehicleController } from '../src/modules/vehicle/vehicle.controller';
-import { VehicleService } from '../src/modules/vehicle/vehicle.service';
+import { VehicleController } from '../../../../src/modules/vehicle/vehicle.controller';
+import { VehicleService } from '../../../../src/modules/vehicle/vehicle.service';
 
 describe('VehicleController', () => {
     let controller: VehicleController;
