@@ -437,7 +437,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 </details>
 
-####  14 - Buscar todas as relação de um motorista
+####  14 - Buscar todas as relação de um motorista pelo id
 - (GET): `http://localhost:3000/vehicle-assignment/driver/1`
 <details>
 - Response:
@@ -493,8 +493,64 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 </details>
 
-####  15 - Buscar todas as relação de um veículo
+####  15 - Buscar todas as relação de um veículo pelo id
 - (GET): `http://localhost:3000/vehicle-assignment/vehicle/1`
+<details>
+- Response:
+    ```json
+    [
+        {
+            "id": 3,
+            "reason": "trip",
+            "startDateAssignment": "2024-01-11T12:23:06.799Z",
+            "endDateAssignment": null,
+            "driver": {
+                "id": 1,
+                "name": "Jack",
+                "createdAt": "2024-01-11T12:13:00.000Z",
+                "updatedAt": "2024-01-11T12:13:00.000Z",
+                "deletedAt": null
+            },
+            "vehicle": {
+                "id": 1,
+                "name": "Uno",
+                "color": "blue",
+                "brand": "Fiat",
+                "plate": "abc123",
+                "createdAt": "2024-01-11T12:14:30.000Z",
+                "updatedAt": "2024-01-11T12:14:30.000Z",
+                "deletedAt": null
+            }
+        },
+        {
+            "id": 2,
+            "reason": "trip",
+            "startDateAssignment": "2024-01-11T12:23:01.677Z",
+            "endDateAssignment": "2024-01-11T12:23:04.214Z",
+            "driver": {
+                "id": 1,
+                "name": "Jack",
+                "createdAt": "2024-01-11T12:13:00.000Z",
+                "updatedAt": "2024-01-11T12:13:00.000Z",
+                "deletedAt": null
+            },
+            "vehicle": {
+                "id": 1,
+                "name": "Uno",
+                "color": "blue",
+                "brand": "Fiat",
+                "plate": "abc123",
+                "createdAt": "2024-01-11T12:14:30.000Z",
+                "updatedAt": "2024-01-11T12:14:30.000Z",
+                "deletedAt": null
+            }
+        }, 
+    ]
+    ``` 
+</details>
+
+####  16 - Buscar todas as relação de um motorista pelo nome
+- (GET): `http://localhost:3000/vehicle-assignment/vehicle?name=Jack`
 <details>
 - Response:
     ```json
