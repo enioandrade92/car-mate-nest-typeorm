@@ -9,9 +9,10 @@ import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vehicle } from './entities/vehicle.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { FilterVehicleDto } from './dto/filter-vehicle.dto';
 import { VehicleRepository } from './repository/vehicle.repository';
+import { VehicleAssignment } from '../vehicle-assignment/entities/vehicle-assignment.entity';
 
 @Injectable()
 export class VehicleService {
@@ -21,6 +22,8 @@ export class VehicleService {
         private vehicleRepository: Repository<Vehicle>,
         @InjectRepository(VehicleRepository)
         private vehicleCustomRepository: VehicleRepository,
+        @InjectRepository(VehicleAssignment)
+        private vehicleAssignmentRepository: Repository<VehicleAssignment>,
     ) { }
     async create(createVehicle: CreateVehicleDto) {
         try {
@@ -112,6 +115,22 @@ export class VehicleService {
 
     async remove(id: number) {
         try {
+            const register = await this.vehicleAssignmentRepository.findOne({
+                where: {
+                    endDateAssignment: IsNull(),
+                    vehicle: { id: id },
+                },
+                relations: { driver: true, vehicle: true },
+            });
+
+            if (register) {
+                const { name } = register.driver;
+                const { id } = register.vehicle;
+                throw new BadRequestException(
+                    `Finalize the link between the ${name} driver and the ${id} car before deleting`,
+                );
+            }
+
             await this.vehicleRepository.softDelete(id);
             const message = `Deleted successfully the vehicle: ${id}`;
             this.logger.log(message);
