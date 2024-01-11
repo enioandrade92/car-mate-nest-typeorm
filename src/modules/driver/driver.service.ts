@@ -24,7 +24,7 @@ export class DriverService {
         private driverCustomRepository: DriverRepository,
         @InjectRepository(VehicleAssignment)
         private vehicleAssignmentRepository: Repository<VehicleAssignment>,
-    ) { }
+    ) {}
     async create(createDriver: CreateDriverDto) {
         try {
             const existDriver = await this.driverRepository.findOne({
@@ -76,13 +76,12 @@ export class DriverService {
         }
     }
 
-    async findAll(filter: FilterDriverDto) {
+    async findAll({ name, page = 1, limit = 10 }: FilterDriverDto) {
         try {
-            const { name, ...paginate } = filter;
-            return await this.driverCustomRepository.searchDriver(
-                name,
-                paginate,
-            );
+            return await this.driverCustomRepository.searchDriver(name, {
+                page,
+                limit,
+            });
         } catch (error) {
             this.logger.error(
                 `Failed to find the driver. Error: ${error.message}.`,
