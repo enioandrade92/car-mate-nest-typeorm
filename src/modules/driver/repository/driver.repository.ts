@@ -15,7 +15,14 @@ export class DriverRepository extends Repository<Driver> {
     }
 
     async searchDriver(name: string, paginate: IPaginationOptions) {
-        const query = this.driverRepository.createQueryBuilder('drivers');
+        const query = this.driverRepository.createQueryBuilder('drivers')
+            .select(`
+                drivers.id,
+                drivers.name,
+                "drivers"."createdAt",
+                "drivers"."updatedAt",
+                "drivers"."deletedAt"
+            `);
         if (name) {
             query.where('lower(drivers.name) like :name', {
                 name: `%${name.toLowerCase()}%`,
