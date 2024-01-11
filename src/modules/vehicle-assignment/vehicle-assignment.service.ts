@@ -24,8 +24,23 @@ export class VehicleAssignmentService {
         private vehicleRepository: Repository<Vehicle>,
         @InjectRepository(Driver)
         private driverRepository: Repository<Driver>,
-    ) { }
+    ) {}
 
+    private async checkDriverAndVehicle(driverId, vehicleId) {
+        const driver = await this.driverRepository.findOne({
+            where: { id: driverId },
+        });
+        if (!driver) {
+            throw new NotFoundException(`Not found driver id ${driverId}`);
+        }
+        const vehicle = await this.vehicleRepository.findOne({
+            where: { id: vehicleId },
+        });
+        if (!vehicle) {
+            throw new NotFoundException(`Not found vehicle id ${vehicleId}`);
+        }
+        return { vehicle, driver };
+    }
     async register({ driverId, vehicleId, reason }: RegisterVehicleDto) {
         try {
             const register = await this.vehicleAssignmentRepository.findOne({
@@ -40,25 +55,14 @@ export class VehicleAssignmentService {
                 const { name } = register.driver;
                 const { id } = register.vehicle;
                 throw new BadRequestException(
-                    `${name} driver already has linked a car id: ${id}`,
+                    `${name} driver already has linked a vehicle id ${id}`,
                 );
             }
+            const { vehicle, driver } = await this.checkDriverAndVehicle(
+                driverId,
+                vehicleId,
+            );
 
-            const driver = await this.driverRepository.findOne({
-                where: { id: driverId },
-            });
-
-            if (!driver) {
-                throw new NotFoundException(`Not found driver id ${driverId}`);
-            }
-            const vehicle = await this.vehicleRepository.findOne({
-                where: { id: vehicleId },
-            });
-            if (!vehicle) {
-                throw new NotFoundException(
-                    `Not found vehicle id ${vehicleId}`,
-                );
-            }
             const Assignment: Partial<VehicleAssignment> = {
                 vehicle,
                 driver,
@@ -92,10 +96,9 @@ export class VehicleAssignmentService {
                 },
                 relations: { driver: true, vehicle: true },
             });
-
             if (!register) {
                 throw new BadRequestException(
-                    `driver id ${driverId} does not have a linked car`,
+                    `driver id ${driverId} does not have a linked vehicle`,
                 );
             }
 
@@ -104,7 +107,7 @@ export class VehicleAssignmentService {
                 register,
             );
             this.logger.log(
-                `The car id ${vehicleId} was unlinked to the driver id ${driverId} `,
+                `The vehicle id ${vehicleId} was unlinked to the driver id ${driverId} `,
             );
 
             return updateRegister;

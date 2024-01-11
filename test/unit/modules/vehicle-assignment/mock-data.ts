@@ -69,3 +69,14 @@ export const mockRegisters = [
         },
     },
 ];
+
+export const mockCreateRegister = {
+    driverId: 1,
+    vehicleId: 1,
+    reason: 'trip',
+};
+
+export const mockFinishRegister = {
+    driverId: 1,
+    vehicleId: 1,
+};
