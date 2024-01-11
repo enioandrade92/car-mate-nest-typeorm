@@ -145,4 +145,18 @@ describe('VehicleAssignmentService', () => {
             expect(response).toStrictEqual(mockRegisters);
         });
     });
+
+    describe('5 - findByDriverName method', () => {
+        it('5.1 - when return an error', async () => {
+            mockAssignmentRepository.find.mockRejectedValueOnce('Error test');
+            const response = async () => await service.findByDriverName('Jack');
+            expect(response).rejects.toThrow(HttpException);
+        });
+
+        it('5.2 - should return a registers', async () => {
+            mockAssignmentRepository.find.mockReturnValueOnce(mockRegisters);
+            const response = await service.findByDriverName('Jack');
+            expect(response).toStrictEqual(mockRegisters);
+        });
+    });
 });
