@@ -3,6 +3,7 @@ export const mockVehicleRepository = {
     save: jest.fn(),
     softDelete: jest.fn(),
     searchVehicle: jest.fn(),
+    createQueryBuilder: null,
 };
 
 export const mockVehicleService = {

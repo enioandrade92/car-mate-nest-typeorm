@@ -3,6 +3,7 @@ export const mockDriverRepository = {
     save: jest.fn(),
     softDelete: jest.fn(),
     searchDriver: jest.fn(),
+    createQueryBuilder: null,
 };
 
 export const mockDriverService = {
