@@ -345,7 +345,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 
 </details>
 
-####  11 - Deletar veículo com o númeoro de identificação
+####  11 - Deletar veículo com o número de identificação
 - (DELETE): `http://localhost:3000/vehicle/:id`
 <details>
 - Regras:
