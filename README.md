@@ -398,7 +398,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 </details>
 
-####  13 - Criar uma relação entre o motorista e um veículo
+####  13 - Finalizar uma relação entre o motorista e um veículo
 - (PUT): `http://localhost:3000/vehicle-assignment`
 <details>
 - Payload:
