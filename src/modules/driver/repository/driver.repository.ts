@@ -1,10 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Driver } from '../entities/driver.entity';
 import { Repository } from 'typeorm';
-import {
-    IPaginationOptions,
-    paginateRawAndEntities,
-} from 'nestjs-typeorm-paginate';
+import { IPaginationOptions, paginateRaw } from 'nestjs-typeorm-paginate';
 
 export class DriverRepository extends Repository<Driver> {
     constructor(
@@ -18,10 +15,19 @@ export class DriverRepository extends Repository<Driver> {
     }
 
     async searchDriver(name: string, paginate: IPaginationOptions) {
-        const query = this.driverRepository.createQueryBuilder('drivers');
+        const query = this.driverRepository.createQueryBuilder('drivers')
+            .select(`
+                drivers.id,
+                drivers.name,
+                "drivers"."createdAt",
+                "drivers"."updatedAt",
+                "drivers"."deletedAt"
+            `);
         if (name) {
-            query.where('drivers.name ILIKE(`%${:name}%`)', { name });
+            query.where('lower(drivers.name) like :name', {
+                name: `%${name.toLowerCase()}%`,
+            });
         }
-        return paginateRawAndEntities(query, paginate);
+        return paginateRaw(query, paginate);
     }
 }

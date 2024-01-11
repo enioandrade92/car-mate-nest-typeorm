@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class FilterFindDto {
+export class FilterDriverDto {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
