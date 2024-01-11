@@ -41,9 +41,12 @@ describe('VehicleAssignmentService', () => {
 
     describe('1 - register method', () => {
         it('1.1 - should return an error when there is a register', async () => {
-            mockAssignmentRepository.findOne.mockReturnValueOnce(
-                mockRegisters[0],
-            );
+            mockAssignmentRepository.createQueryBuilder = jest.fn(() => ({
+                innerJoinAndSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
+                andWhere: jest.fn().mockReturnThis(),
+                getMany: jest.fn().mockReturnValueOnce(mockRegisters),
+            }));
             const response = async () =>
                 await service.register(mockCreateRegister);
             expect(response).rejects.toThrow(
@@ -52,7 +55,12 @@ describe('VehicleAssignmentService', () => {
         });
 
         it('1.2 - should return an error when there is not the vehicle', async () => {
-            mockAssignmentRepository.findOne.mockReturnValueOnce(null);
+            mockAssignmentRepository.createQueryBuilder = jest.fn(() => ({
+                innerJoinAndSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
+                andWhere: jest.fn().mockReturnThis(),
+                getMany: jest.fn().mockReturnValueOnce([]),
+            }));
             mockDriverRepository.findOne.mockReturnValueOnce(null);
 
             const response = async () =>
@@ -61,7 +69,12 @@ describe('VehicleAssignmentService', () => {
         });
 
         it('1.3 - should return an error when there is not the driver', async () => {
-            mockAssignmentRepository.findOne.mockReturnValueOnce(null);
+            mockAssignmentRepository.createQueryBuilder = jest.fn(() => ({
+                innerJoinAndSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
+                andWhere: jest.fn().mockReturnThis(),
+                getMany: jest.fn().mockReturnValueOnce([]),
+            }));
             mockDriverRepository.findOne.mockReturnValueOnce(mockVehicles[0]);
             mockVehicleRepository.findOne.mockReturnValueOnce(null);
 
@@ -71,7 +84,12 @@ describe('VehicleAssignmentService', () => {
         });
 
         it('1.4 - should return a register', async () => {
-            mockAssignmentRepository.findOne.mockReturnValueOnce(null);
+            mockAssignmentRepository.createQueryBuilder = jest.fn(() => ({
+                innerJoinAndSelect: jest.fn().mockReturnThis(),
+                where: jest.fn().mockReturnThis(),
+                andWhere: jest.fn().mockReturnThis(),
+                getMany: jest.fn().mockReturnValueOnce([]),
+            }));
             mockDriverRepository.findOne.mockReturnValueOnce(mockDriver[0]);
             mockVehicleRepository.findOne.mockReturnValueOnce(mockVehicles[0]);
             mockAssignmentRepository.save.mockReturnValueOnce(mockRegisters[0]);
