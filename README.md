@@ -67,7 +67,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - [x] Buscar todos os motoristas, além de poder filtrar por parte do nome;
 - [x] Deletar um motorista pelo número de identificação 
 - (Quando não há relação em aberto com veículo);
-- [x] Criar um veículo com o nome;
+- [x] Criar um veículo;
 - [x] Editar o veículo;
 - [x] Buscar um veículo pelo número de identificação;
 - [x] Buscar todos os veículos, além de poder filtrar por cor e/ou marca;
