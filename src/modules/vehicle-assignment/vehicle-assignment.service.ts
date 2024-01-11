@@ -6,12 +6,13 @@ import {
     Logger,
     NotFoundException,
 } from '@nestjs/common';
-import { RegisterVehicleAssignmentDto } from './dto/register-vehicle-assignment.dto';
+import { RegisterVehicleDto } from './dto/register-vehicle-assignment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Vehicle } from '../vehicle/entities/vehicle.entity';
 import { IsNull, Repository } from 'typeorm';
 import { Driver } from '../driver/entities/driver.entity';
 import { VehicleAssignment } from './entities/vehicle-assignment.entity';
+import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 
 @Injectable()
 export class VehicleAssignmentService {
@@ -25,11 +26,7 @@ export class VehicleAssignmentService {
         private driverRepository: Repository<Driver>,
     ) { }
 
-    async register({
-        driverId,
-        vehicleId,
-        reason,
-    }: RegisterVehicleAssignmentDto) {
+    async register({ driverId, vehicleId, reason }: RegisterVehicleDto) {
         try {
             const register = await this.vehicleAssignmentRepository.findOne({
                 where: {
@@ -41,9 +38,9 @@ export class VehicleAssignmentService {
 
             if (register) {
                 const { name } = register.driver;
-                const { plate } = register.vehicle;
+                const { id } = register.vehicle;
                 throw new BadRequestException(
-                    `${name} driver  already has linked A ${plate} car`,
+                    `${name} driver already has linked a car id: ${id}`,
                 );
             }
 
@@ -52,13 +49,15 @@ export class VehicleAssignmentService {
             });
 
             if (!driver) {
-                throw new NotFoundException(`Not found driver: ${driverId}`);
+                throw new NotFoundException(`Not found driver id ${driverId}`);
             }
             const vehicle = await this.vehicleRepository.findOne({
                 where: { id: vehicleId },
             });
             if (!vehicle) {
-                throw new NotFoundException(`Not found vehicle: ${vehicleId}`);
+                throw new NotFoundException(
+                    `Not found vehicle id ${vehicleId}`,
+                );
             }
             const Assignment: Partial<VehicleAssignment> = {
                 vehicle,
@@ -70,7 +69,7 @@ export class VehicleAssignmentService {
                 Assignment,
             );
             this.logger.log(
-                `The ${vehicle.plate} car was linked to the ${driver.name} driver`,
+                `The car id ${vehicle.id} was linked to the driver id ${driver.id} `,
             );
 
             return savedAssignment;
@@ -83,15 +82,76 @@ export class VehicleAssignmentService {
         }
     }
 
-    findAll() {
-        return `This action returns all vehicleAssignment`;
+    async finish({ driverId, vehicleId }: UpdateAssignmentDto) {
+        try {
+            const register = await this.vehicleAssignmentRepository.findOne({
+                where: {
+                    endDateAssignment: IsNull(),
+                    driver: { id: driverId },
+                    vehicle: { id: vehicleId },
+                },
+                relations: { driver: true, vehicle: true },
+            });
+
+            if (!register) {
+                throw new BadRequestException(
+                    `driver id ${driverId} does not have a linked car`,
+                );
+            }
+
+            register.endDateAssignment = new Date();
+            const updateRegister = await this.vehicleAssignmentRepository.save(
+                register,
+            );
+            this.logger.log(
+                `The car id ${vehicleId} was unlinked to the driver id ${driverId} `,
+            );
+
+            return updateRegister;
+        } catch (error) {
+            this.logger.error(
+                `Failed to finish register. Error: ${error.message}.`,
+            );
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} vehicleAssignment`;
+    async findByVehicleId(vehicleId: number) {
+        try {
+            return await this.vehicleAssignmentRepository.find({
+                where: { driver: { id: vehicleId } },
+                relations: { driver: true, vehicle: true },
+                order: { id: 'DESC' },
+            });
+        } catch (error) {
+            this.logger.error(
+                `Failed to find registers. Error: ${error.message}.`,
+            );
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} vehicleAssignment`;
+    async findByDriverId(driverId: number) {
+        try {
+            return await this.vehicleAssignmentRepository.find({
+                where: { driver: { id: driverId } },
+                relations: { driver: true, vehicle: true },
+                order: { id: 'DESC' },
+            });
+        } catch (error) {
+            this.logger.error(
+                `Failed to find registers. Error: ${error.message}.`,
+            );
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
     }
 }

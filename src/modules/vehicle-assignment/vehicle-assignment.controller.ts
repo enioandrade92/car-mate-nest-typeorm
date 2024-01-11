@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Param,
+    Delete,
+    Put,
+} from '@nestjs/common';
 import { VehicleAssignmentService } from './vehicle-assignment.service';
-import { RegisterVehicleAssignmentDto } from './dto/register-vehicle-assignment.dto';
+import { RegisterVehicleDto } from './dto/register-vehicle-assignment.dto';
+import { UpdateAssignmentDto } from './dto/update-assignment.dto';
 
 @Controller('vehicle-assignment')
 export class VehicleAssignmentController {
@@ -9,26 +18,24 @@ export class VehicleAssignmentController {
     ) { }
 
     @Post('register')
-    async register(
-        @Body() RegisterVehicleAssignmentDto: RegisterVehicleAssignmentDto,
-    ) {
+    async register(@Body() RegisterVehicleAssignment: RegisterVehicleDto) {
         return this.vehicleAssignmentService.register(
-            RegisterVehicleAssignmentDto,
+            RegisterVehicleAssignment,
         );
     }
 
-    @Get()
-    async findAll() {
-        return this.vehicleAssignmentService.findAll();
+    @Put()
+    async registerFinish(@Body() updateAssignment: UpdateAssignmentDto) {
+        return this.vehicleAssignmentService.finish(updateAssignment);
     }
 
-    @Get(':id')
-    async findOne(@Param('id') id: string) {
-        return this.vehicleAssignmentService.findOne(+id);
+    @Get('vehicle/:id')
+    async findByVehicleId(@Param('id') id: string) {
+        return this.vehicleAssignmentService.findByVehicleId(+id);
     }
 
-    @Delete(':id')
-    async remove(@Param('id') id: string) {
-        return this.vehicleAssignmentService.remove(+id);
+    @Get('driver/:id')
+    async findByDriverId(@Param('id') id: string) {
+        return this.vehicleAssignmentService.findByDriverId(+id);
     }
 }

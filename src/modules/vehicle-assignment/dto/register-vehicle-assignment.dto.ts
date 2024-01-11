@@ -1,6 +1,6 @@
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
-export class RegisterVehicleAssignmentDto {
+export class RegisterVehicleDto {
     @IsInt()
     @IsNotEmpty()
     driverId: number;
