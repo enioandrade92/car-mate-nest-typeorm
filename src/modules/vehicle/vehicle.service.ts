@@ -32,14 +32,14 @@ export class VehicleService {
             });
             if (existVehicle) {
                 throw new BadRequestException(
-                    `Already exists the vehicle: ${existVehicle}`,
+                    `Already exists the vehicle plate ${existVehicle.plate}`,
                 );
             }
             const createdVehicle = await this.vehicleRepository.save(
                 createVehicle,
             );
             this.logger.log(
-                `Created successfully the vehicle: ${createdVehicle.name}`,
+                `Created successfully the vehicle id ${createdVehicle.id}`,
             );
             return createdVehicle;
         } catch (error) {
@@ -59,7 +59,7 @@ export class VehicleService {
                 where: { id },
             });
             if (!vehicle) {
-                throw new BadRequestException(`Not found vehicle: ${vehicle}`);
+                throw new BadRequestException(`Not found vehicle id ${id}`);
             }
             const updatedVehicle = await this.vehicleRepository.save({
                 ...vehicle,
@@ -98,9 +98,9 @@ export class VehicleService {
                 where: { id },
             });
             if (!vehicle) {
-                throw new BadRequestException(`Not found vehicle: ${vehicle}`);
+                throw new BadRequestException(`Not found vehicle id ${id}`);
             }
-            this.logger.log(`Vehicle ${vehicle.name} found`);
+            this.logger.log(`Vehicle id ${vehicle.id} found`);
             return vehicle;
         } catch (error) {
             this.logger.error(
@@ -124,15 +124,15 @@ export class VehicleService {
             });
 
             if (register) {
-                const { name } = register.driver;
-                const { id } = register.vehicle;
+                const { id: driverId } = register.driver;
+                const { id: vehicleId } = register.vehicle;
                 throw new BadRequestException(
-                    `Finalize the link between the ${name} driver and the ${id} car before deleting`,
+                    `Finalize the link between the driver id ${driverId} and the vehicle id ${vehicleId} before deleting`,
                 );
             }
 
             await this.vehicleRepository.softDelete(id);
-            const message = `Deleted successfully the vehicle: ${id}`;
+            const message = `Deleted successfully the vehicle id ${id}`;
             this.logger.log(message);
             return message;
         } catch (error) {
