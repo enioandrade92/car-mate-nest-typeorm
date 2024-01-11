@@ -2,6 +2,7 @@ export const mockAssignmentRepository = {
     findOne: jest.fn(),
     save: jest.fn(),
     find: jest.fn(),
+    createQueryBuilder: null,
 };
 
 export const mockAssignmentService = {
@@ -9,4 +10,5 @@ export const mockAssignmentService = {
     finish: jest.fn(),
     findByDriverId: jest.fn(),
     findByVehicleId: jest.fn(),
+    findByDriverName: jest.fn(),
 };

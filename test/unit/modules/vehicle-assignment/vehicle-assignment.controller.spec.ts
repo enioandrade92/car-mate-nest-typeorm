@@ -62,4 +62,14 @@ describe('VehicleAssignmentController', () => {
             expect(response).toStrictEqual(mockRegisters);
         });
     });
+
+    describe('5 - findByDriverName method', () => {
+        it('5.1 - should return a registers', async () => {
+            mockAssignmentService.findByDriverName.mockReturnValueOnce(
+                mockRegisters,
+            );
+            const response = await controller.findByDriverName('1');
+            expect(response).toStrictEqual(mockRegisters);
+        });
+    });
 });
