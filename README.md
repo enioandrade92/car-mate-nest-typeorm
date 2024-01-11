@@ -99,9 +99,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 
 ---
 ####  1 - Cadastrar motorista
-<details>
 - (POST): `http://localhost:3000/driver`
-
+<details>
 - Regras: 
     - Não é possível cadastrar o mesmo motorista;
 
@@ -125,9 +124,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  2 - Atualizar motorista
-<details>
 - (PUT): `http://localhost:3000/driver/:id`
-
+<details>
 - Payload: 
     ```json
     {
@@ -148,9 +146,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  3 - Buscar motorista por número de identificação
-<details>
 - (GET): `http://localhost:3000/driver/:id`
-
+<details>
 - Response:
     ```json
     {
@@ -165,9 +162,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 
 
 ####  4 - Buscar todos os motoristas
-<details>
 - (GET): `http://localhost:3000/driver?page=1&limit=10`
-
+<details>
 - Response:
     ```json
     {
@@ -197,9 +193,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  4 - Buscar motorista utilizando o nome ou parte dele
-<details>
 - (GET): `http://localhost:3000/driver?name=ja`
-
+<details>
 - Response:
     ```json
     [
@@ -217,9 +212,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  5 - Deletar motorista com o número de identificação
-<details>
 - (DELETE): `http://localhost:3000/driver/:id`
-
+<details>
 - Regras:
     - Só é possível deletar um motorista, quando ele não está com uma relação em andamento com um veículo.
 
@@ -228,9 +222,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  6 - Cadastrar veículo
-<details>
 - (POST): `http://localhost:3000/vehicle`
-
+<details>
 - Regras: 
     - Não é possível cadastrar mais de um carro com a mesma placa;
 
@@ -261,9 +254,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  7 - Atualizar veículo
-<details>
 - (PUT): `http://localhost:3000/vehicle/:id`
-
+<details>
 - Regras: 
     - Não é possível cadastrar mais de um carro com a mesma placa;
 
@@ -291,9 +283,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  8 - Buscar veículo por número de identificação
-<details>
 - (GET): `http://localhost:3000/vehicle/:id`
-
+<details>
 - Response:
     ```json
     {
@@ -311,9 +302,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  9 - Buscar todos os veículos
-<details>
 - (GET): `http://localhost:3000/vehicle`
-
+<details>
 - Response:
     ```json
     [
@@ -335,9 +325,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  10 - Buscar veículos por filtro de cor e/ou marca
-<details>
 - (GET): `http://localhost:3000/vehicle?color=blue&brand=fiat`
-
+<details>
 - Response:
     ```json
     [
@@ -357,9 +346,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  11 - Deletar veículo com o númeoro de identificação
-<details>
 - (DELETE): `http://localhost:3000/vehicle/:id`
-
+<details>
 - Regras:
     - Só é possível deletar um veículo, quando ele não está com uma relação em andamento com um motorista.
 
@@ -368,9 +356,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  12 - Criar uma relação entre o motorista e um veículo
-<details>
 - (POST): `http://localhost:3000/vehicle-assignment/register`
-
+<details>
 - Regras: 
     - Só é possível criar uma relação entre veículo e motorista, caso ambos não estejam em outra relação;
 
@@ -412,9 +399,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  13 - Criar uma relação entre o motorista e um veículo
-<details>
 - (PUT): `http://localhost:3000/vehicle-assignment`
-
+<details>
 - Payload:
     ```json
     {
@@ -452,9 +438,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  14 - Buscar todas as relação de um motorista
-<details>
 - (GET): `http://localhost:3000/vehicle-assignment/driver/1`
-
+<details>
 - Response:
     ```json
     [
@@ -509,9 +494,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 </details>
 
 ####  15 - Buscar todas as relação de um veículo
-<details>
 - (GET): `http://localhost:3000/vehicle-assignment/vehicle/1`
-
+<details>
 - Response:
     ```json
     [
