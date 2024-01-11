@@ -437,7 +437,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 </details>
 
-####  14 - Buscar todas as relação de um motorista pelo id
+####  14 - Buscar todas as relações de um motorista pelo id
 - (GET): `http://localhost:3000/vehicle-assignment/driver/1`
 <details>
 - Response:
@@ -493,7 +493,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 </details>
 
-####  15 - Buscar todas as relação de um veículo pelo id
+####  15 - Buscar todas as relações de um veículo pelo id
 - (GET): `http://localhost:3000/vehicle-assignment/vehicle/1`
 <details>
 - Response:
@@ -549,7 +549,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 </details>
 
-####  16 - Buscar todas as relação de um motorista pelo nome
+####  16 - Buscar todas as relações de um motorista pelo nome
 - (GET): `http://localhost:3000/vehicle-assignment/vehicle?name=Jack`
 <details>
 - Response:
