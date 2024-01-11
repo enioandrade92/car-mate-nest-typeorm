@@ -8,10 +8,11 @@ import {
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Driver } from './entities/driver.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { DriverRepository } from './repository/driver.repository';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { FilterDriverDto } from './dto/filter-driver.dto';
+import { VehicleAssignment } from '../vehicle-assignment/entities/vehicle-assignment.entity';
 
 @Injectable()
 export class DriverService {
@@ -21,6 +22,8 @@ export class DriverService {
         private driverRepository: Repository<Driver>,
         @InjectRepository(DriverRepository)
         private driverCustomRepository: DriverRepository,
+        @InjectRepository(VehicleAssignment)
+        private vehicleAssignmentRepository: Repository<VehicleAssignment>,
     ) { }
     async create(createDriver: CreateDriverDto) {
         try {
@@ -114,6 +117,22 @@ export class DriverService {
 
     async remove(id: number) {
         try {
+            const register = await this.vehicleAssignmentRepository.findOne({
+                where: {
+                    endDateAssignment: IsNull(),
+                    driver: { id: id },
+                },
+                relations: { driver: true, vehicle: true },
+            });
+
+            if (register) {
+                const { name } = register.driver;
+                const { id } = register.vehicle;
+                throw new BadRequestException(
+                    `Finalize the link between the ${name} driver and the ${id} car before deleting`,
+                );
+            }
+
             await this.driverRepository.softDelete(id);
             const message = `Deleted successfully the driver: ${id}`;
             this.logger.log(message);
