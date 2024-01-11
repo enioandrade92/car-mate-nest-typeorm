@@ -6,7 +6,7 @@ import { DriverService } from '../../../../src/modules/driver/driver.service';
 import {
     mockCreateDriver,
     mockDriver,
-    mockFilter,
+    mockFilterDriver,
     mockPaginateDrivers,
     mockUpdateDriver,
 } from './mock-data';
@@ -56,7 +56,7 @@ describe('DriverController', () => {
                 mockPaginateDrivers,
             );
 
-            const response = await controller.findAll(mockFilter);
+            const response = await controller.findAll(mockFilterDriver);
             expect(response).toStrictEqual(mockPaginateDrivers);
         });
     });

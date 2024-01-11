@@ -22,6 +22,14 @@ export class VehicleController {
         return this.vehicleService.create(createVehicleDto);
     }
 
+    @Put(':id')
+    async update(
+        @Param('id') id: string,
+        @Body() updateVehicleDto: UpdateVehicleDto,
+    ) {
+        return this.vehicleService.update(+id, updateVehicleDto);
+    }
+
     @Get()
     async findAll(@Query() filters?: FilterVehicleDto) {
         return this.vehicleService.findAll(filters);
@@ -30,14 +38,6 @@ export class VehicleController {
     @Get(':id')
     async findOne(@Param('id') id: string) {
         return this.vehicleService.findOne(+id);
-    }
-
-    @Put(':id')
-    async update(
-        @Param('id') id: string,
-        @Body() updateVehicleDto: UpdateVehicleDto,
-    ) {
-        return this.vehicleService.update(+id, updateVehicleDto);
     }
 
     @Delete(':id')

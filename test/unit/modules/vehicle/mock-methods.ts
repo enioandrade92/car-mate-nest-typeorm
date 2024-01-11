@@ -5,7 +5,7 @@ export const mockVehicleRepository = {
     searchVehicle: jest.fn(),
 };
 
-export const mockVehicleDriver = {
+export const mockVehicleService = {
     create: jest.fn(),
     update: jest.fn(),
     findAll: jest.fn(),
