@@ -2,6 +2,7 @@ export const mockAssignmentRepository = {
     findOne: jest.fn(),
     save: jest.fn(),
     find: jest.fn(),
+    createQueryBuilder: null,
 };
 
 export const mockAssignmentService = {

@@ -26,7 +26,7 @@ export class VehicleAssignmentService {
         private driverRepository: Repository<Driver>,
     ) {}
 
-    private async checkDriverAndVehicle(driverId, vehicleId) {
+    private async checkDriverAndVehicle(driverId: number, vehicleId: number) {
         const driver = await this.driverRepository.findOne({
             where: { id: driverId },
         });
@@ -41,19 +41,27 @@ export class VehicleAssignmentService {
         }
         return { vehicle, driver };
     }
+
+    private async checkRegister(driverId: number, vehicleId: number) {
+        return await this.vehicleAssignmentRepository
+            .createQueryBuilder('assignment')
+            .innerJoinAndSelect('assignment.driver', 'driver')
+            .innerJoinAndSelect('assignment.vehicle', 'vehicle')
+            .where('"assignment"."endDateAssignment" is null')
+            .andWhere('(driver.id = :driverId OR vehicle.id = :vehicleId)', {
+                driverId,
+                vehicleId,
+            })
+            .getMany();
+    }
+
     async register({ driverId, vehicleId, reason }: RegisterVehicleDto) {
         try {
-            const register = await this.vehicleAssignmentRepository.findOne({
-                where: {
-                    endDateAssignment: IsNull(),
-                    driver: { id: driverId },
-                },
-                relations: { driver: true, vehicle: true },
-            });
+            const register = await this.checkRegister(driverId, vehicleId);
 
-            if (register) {
-                const { name } = register.driver;
-                const { id } = register.vehicle;
+            if (register.length) {
+                const { name } = register[0].driver;
+                const { id } = register[0].vehicle;
                 throw new BadRequestException(
                     `${name} driver already has linked a vehicle id ${id}`,
                 );
