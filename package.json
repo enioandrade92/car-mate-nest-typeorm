@@ -71,9 +71,6 @@
           "isolatedModules": true
         }
       ]
-    },
-    "moduleNameMapper": {
-      "^axios$": "require.resolve('axios')"
     }
   }
 }
