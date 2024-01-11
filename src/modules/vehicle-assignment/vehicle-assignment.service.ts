@@ -165,4 +165,22 @@ export class VehicleAssignmentService {
             );
         }
     }
+
+    async findByDriverName(name: string) {
+        try {
+            return await this.vehicleAssignmentRepository.find({
+                where: { driver: { name } },
+                relations: { driver: true, vehicle: true },
+                order: { id: 'DESC' },
+            });
+        } catch (error) {
+            this.logger.error(
+                `Failed to find registers. Error: ${error.message}.`,
+            );
+            throw new HttpException(
+                error.message,
+                error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
 }

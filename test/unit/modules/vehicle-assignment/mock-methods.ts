@@ -10,4 +10,5 @@ export const mockAssignmentService = {
     finish: jest.fn(),
     findByDriverId: jest.fn(),
     findByVehicleId: jest.fn(),
+    findByDriverName: jest.fn(),
 };
