@@ -30,19 +30,22 @@ describe('DriverController', () => {
 
     describe('1 - create method', () => {
         it('1.1 - should return a created driver', async () => {
-            mockDriverService.create.mockReturnValueOnce(mockDriver[0]);
-            const response = await controller.create(mockCreateDriver);
+            mockDriverService.createDriver.mockReturnValueOnce(mockDriver[0]);
+            const response = await controller.createDriver(mockCreateDriver);
             expect(response).toStrictEqual(mockDriver[0]);
         });
     });
 
     describe('2 - update method', () => {
         it('2.1 - should return a updated driver', async () => {
-            mockDriverService.update.mockReturnValueOnce({
+            mockDriverService.updateDriver.mockReturnValueOnce({
                 ...mockDriver[0],
                 ...mockUpdateDriver,
             });
-            const response = await controller.update('1', mockUpdateDriver);
+            const response = await controller.updateDriver(
+                '1',
+                mockUpdateDriver,
+            );
             expect(response).toStrictEqual({
                 ...mockDriver[0],
                 ...mockUpdateDriver,
@@ -52,29 +55,33 @@ describe('DriverController', () => {
 
     describe('3 - findAll method', () => {
         it('3.1 - should return a drivers', async () => {
-            mockDriverService.findAll.mockResolvedValueOnce(
+            mockDriverService.findDriverByFilters.mockResolvedValueOnce(
                 mockPaginateDrivers,
             );
 
-            const response = await controller.findAll(mockFilterDriver);
+            const response = await controller.findDriverByFilters(
+                mockFilterDriver,
+            );
             expect(response).toStrictEqual(mockPaginateDrivers);
         });
     });
 
     describe('4 - findOne method', () => {
         it('4.1 - should return a drivers', async () => {
-            mockDriverService.findOne.mockResolvedValueOnce(mockDriver[0]);
-            const response = await controller.findOne('1');
+            mockDriverService.findDriverById.mockResolvedValueOnce(
+                mockDriver[0],
+            );
+            const response = await controller.findDriverById('1');
             expect(response).toStrictEqual(mockDriver[0]);
         });
     });
 
     describe('5 - remove method', () => {
         it('5.1 - should return a drivers', async () => {
-            mockDriverService.remove.mockResolvedValueOnce(
+            mockDriverService.removeDriver.mockResolvedValueOnce(
                 'Deleted successfully the driver id 1',
             );
-            const response = await controller.remove('1');
+            const response = await controller.removeDriver('1');
             expect(response).toStrictEqual(
                 'Deleted successfully the driver id 1',
             );

@@ -35,7 +35,10 @@ describe('DriverRepository', () => {
             (paginateRaw as jest.Mock).mockResolvedValueOnce(mockDriver);
 
             const { name, ...paginate } = mockFilterDriver;
-            const response = await repository.searchDriver(name, paginate);
+            const response = await repository.findDriverByFilters(
+                name,
+                paginate,
+            );
             expect(response).toStrictEqual(mockDriver);
         });
     });
