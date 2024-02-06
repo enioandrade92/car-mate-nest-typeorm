@@ -28,8 +28,6 @@ export class BaseRepository implements InterfaceRepository {
     }
 
     async softDelete(id: number): Promise<any> {
-        return await this.repository.softDelete({
-            where: { id },
-        });
+        return await this.repository.softDelete(id);
     }
 }
