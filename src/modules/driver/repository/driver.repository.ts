@@ -14,7 +14,7 @@ export class DriverRepository extends Repository<Driver> {
         );
     }
 
-    async searchDriver(name: string, paginate: IPaginationOptions) {
+    async findDriverByFilters(name: string, paginate: IPaginationOptions) {
         const query = this.driverRepository.createQueryBuilder('drivers')
             .select(`
                 drivers.id,

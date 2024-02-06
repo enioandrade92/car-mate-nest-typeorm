@@ -11,4 +11,4 @@ import { VehicleAssignment } from '../vehicle-assignment/entities/vehicle-assign
     controllers: [VehicleController],
     providers: [VehicleService, VehicleRepository],
 })
-export class VehicleModule { }
+export class VehicleModule {}

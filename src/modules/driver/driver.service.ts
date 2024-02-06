@@ -13,10 +13,12 @@ import { DriverRepository } from './repository/driver.repository';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { FilterDriverDto } from './dto/filter-driver.dto';
 import { VehicleAssignment } from '../vehicle-assignment/entities/vehicle-assignment.entity';
+import { BaseRepository } from '../base-repository';
 
 @Injectable()
 export class DriverService {
     private readonly logger = new Logger(DriverService.name);
+    private repository = new BaseRepository(this.driverRepository);
     constructor(
         @InjectRepository(Driver)
         private driverRepository: Repository<Driver>,
@@ -25,21 +27,21 @@ export class DriverService {
         @InjectRepository(VehicleAssignment)
         private vehicleAssignmentRepository: Repository<VehicleAssignment>,
     ) {}
-    async create(createDriver: CreateDriverDto) {
+    async createDriver(createDriver: CreateDriverDto) {
         try {
-            const existDriver = await this.driverRepository.findOne({
-                where: { name: createDriver.name },
-            });
+            const existDriver = await this.repository.findByName(
+                createDriver.name,
+            );
             if (existDriver) {
                 throw new BadRequestException(
                     `Already exists the driver: ${existDriver.name}`,
                 );
             }
-            const savedDriver = await this.driverRepository.save(createDriver);
+            const createdDriver = await this.repository.create(createDriver);
             this.logger.log(
-                `Created successfully the driver id ${savedDriver.id}`,
+                `Created successfully the driver id ${createdDriver.id}`,
             );
-            return savedDriver;
+            return createdDriver;
         } catch (error) {
             this.logger.error(
                 `Failed to create new driver. Error: ${error.message}.`,
@@ -51,18 +53,16 @@ export class DriverService {
         }
     }
 
-    async update(id: number, updateDriver: UpdateDriverDto) {
+    async updateDriver(id: number, updateDriver: UpdateDriverDto) {
         try {
-            const driver = await this.driverRepository.findOne({
-                where: { id },
-            });
+            const driver = await this.repository.findById(id);
             if (!driver) {
                 throw new BadRequestException(`Not found driver id ${id}`);
             }
-            const updatedDriver = await this.driverRepository.save({
-                ...driver,
-                ...updateDriver,
-            });
+            const updatedDriver = await this.repository.update(
+                driver,
+                updateDriver,
+            );
             this.logger.log(`Updated successfully the Driver id ${driver.id}`);
             return updatedDriver;
         } catch (error) {
@@ -76,9 +76,9 @@ export class DriverService {
         }
     }
 
-    async findAll({ name, page = 1, limit = 10 }: FilterDriverDto) {
+    async findDriverByFilters({ name, page = 1, limit = 10 }: FilterDriverDto) {
         try {
-            return await this.driverCustomRepository.searchDriver(name, {
+            return await this.driverCustomRepository.findDriverByFilters(name, {
                 page,
                 limit,
             });
@@ -93,11 +93,9 @@ export class DriverService {
         }
     }
 
-    async findOne(id: number) {
+    async findDriverById(id: number) {
         try {
-            const driver = await this.driverRepository.findOne({
-                where: { id },
-            });
+            const driver = await this.repository.findById(id);
             if (!driver) {
                 throw new BadRequestException(`Not found driver id ${id}`);
             }
@@ -114,7 +112,7 @@ export class DriverService {
         }
     }
 
-    async remove(id: number) {
+    async removeDriver(id: number) {
         try {
             const register = await this.vehicleAssignmentRepository.findOne({
                 where: {
@@ -132,7 +130,7 @@ export class DriverService {
                 );
             }
 
-            await this.driverRepository.softDelete(id);
+            await this.repository.softDelete(id);
             const message = `Deleted successfully the driver id ${id}`;
             this.logger.log(message);
             return message;

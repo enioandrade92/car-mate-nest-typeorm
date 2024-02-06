@@ -2,16 +2,16 @@ export const mockVehicleRepository = {
     findOne: jest.fn(),
     save: jest.fn(),
     softDelete: jest.fn(),
-    searchVehicle: jest.fn(),
+    findVehicleByFilters: jest.fn(),
     createQueryBuilder: null,
 };
 
 export const mockVehicleService = {
-    create: jest.fn(),
-    update: jest.fn(),
-    findAll: jest.fn(),
-    findOne: jest.fn(),
-    remove: jest.fn(),
+    createVehicle: jest.fn(),
+    updateVehicle: jest.fn(),
+    findVehicleByFilters: jest.fn(),
+    findVehicleById: jest.fn(),
+    removeVehicle: jest.fn(),
 };
 
 export const mockFilterVehicle = {

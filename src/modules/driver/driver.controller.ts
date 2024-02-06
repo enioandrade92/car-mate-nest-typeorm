@@ -15,30 +15,33 @@ import { UpdateDriverDto } from './dto/update-driver.dto';
 
 @Controller('driver')
 export class DriverController {
-    constructor(private readonly driverService: DriverService) { }
+    constructor(private readonly driverService: DriverService) {}
 
     @Post()
-    async create(@Body() createDriverDto: CreateDriverDto) {
-        return this.driverService.create(createDriverDto);
+    async createDriver(@Body() createDriverDto: CreateDriverDto) {
+        return this.driverService.createDriver(createDriverDto);
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateDriverDto: UpdateDriverDto) {
-        return this.driverService.update(+id, updateDriverDto);
+    updateDriver(
+        @Param('id') id: string,
+        @Body() updateDriverDto: UpdateDriverDto,
+    ) {
+        return this.driverService.updateDriver(+id, updateDriverDto);
     }
 
     @Get()
-    findAll(@Query() queryString: FilterDriverDto) {
-        return this.driverService.findAll(queryString);
+    findDriverByFilters(@Query() queryString: FilterDriverDto) {
+        return this.driverService.findDriverByFilters(queryString);
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.driverService.findOne(+id);
+    findDriverById(@Param('id') id: string) {
+        return this.driverService.findDriverById(+id);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.driverService.remove(+id);
+    removeDriver(@Param('id') id: string) {
+        return this.driverService.removeDriver(+id);
     }
 }
