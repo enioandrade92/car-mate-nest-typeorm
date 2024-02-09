@@ -42,7 +42,7 @@ describe('VehicleService', () => {
         it('1.1 - should return an error when there is a vehicle with the plate', async () => {
             mockVehicleRepository.findOne.mockReturnValueOnce(mockVehicles[0]);
             const response = async () =>
-                await service.create(mockCreateVehicle);
+                await service.createVehicle(mockCreateVehicle);
             expect(response).rejects.toThrow(
                 'Already exists the vehicle plate abc123',
             );
@@ -51,7 +51,7 @@ describe('VehicleService', () => {
         it('1.2 - should return a created vehicle', async () => {
             mockVehicleRepository.findOne.mockReturnValueOnce(null);
             mockVehicleRepository.save.mockReturnValueOnce(mockVehicles[0]);
-            const response = await service.create(mockCreateVehicle);
+            const response = await service.createVehicle(mockCreateVehicle);
             expect(response).toStrictEqual(mockVehicles[0]);
         });
     });
@@ -60,7 +60,7 @@ describe('VehicleService', () => {
         it('2.1 - should return an error when there is not a vehicle', async () => {
             mockVehicleRepository.findOne.mockReturnValueOnce(null);
             const response = async () =>
-                await service.update(1, mockUpdateVehicle);
+                await service.updateVehicle(1, mockUpdateVehicle);
             expect(response).rejects.toThrow('Not found vehicle id 1');
         });
         it('2.2 - should return a updated driver', async () => {
@@ -69,7 +69,7 @@ describe('VehicleService', () => {
                 ...mockVehicles[0],
                 ...mockUpdateVehicle,
             });
-            const response = await service.update(1, mockUpdateVehicle);
+            const response = await service.updateVehicle(1, mockUpdateVehicle);
             expect(response).toStrictEqual({
                 ...mockVehicles[0],
                 ...mockUpdateVehicle,
@@ -79,35 +79,39 @@ describe('VehicleService', () => {
 
     describe('3 - findAll method', () => {
         it('3.1 - when return an error', async () => {
-            mockVehicleRepository.searchVehicle.mockRejectedValueOnce(
+            mockVehicleRepository.findVehicleByFilters.mockRejectedValueOnce(
                 'Error test',
             );
             const response = async () =>
-                await service.findAll(mockFilterVehicle);
+                await service.findVehicleByFilters(mockFilterVehicle);
             expect(response).rejects.toThrow(HttpException);
         });
         it('3.2 - should return a vehicles blue color and fiat brand', async () => {
-            mockVehicleRepository.searchVehicle.mockResolvedValueOnce(
+            mockVehicleRepository.findVehicleByFilters.mockResolvedValueOnce(
                 mockVehicles[0],
             );
 
-            const response = await service.findAll(mockFilterVehicle);
+            const response = await service.findVehicleByFilters(
+                mockFilterVehicle,
+            );
             expect(response).toStrictEqual(mockVehicles[0]);
         });
         it('3.3 - should return a vehicles fiat brand', async () => {
-            mockVehicleRepository.searchVehicle.mockResolvedValueOnce(
+            mockVehicleRepository.findVehicleByFilters.mockResolvedValueOnce(
                 mockVehicles,
             );
 
-            const response = await service.findAll(mockFilterVehicle);
+            const response = await service.findVehicleByFilters(
+                mockFilterVehicle,
+            );
             expect(response).toStrictEqual(mockVehicles);
         });
         it('3.4 - should return a all vehicles', async () => {
-            mockVehicleRepository.searchVehicle.mockResolvedValueOnce(
+            mockVehicleRepository.findVehicleByFilters.mockResolvedValueOnce(
                 mockVehicles,
             );
 
-            const response = await service.findAll(null);
+            const response = await service.findVehicleByFilters(null);
             expect(response).toStrictEqual(mockVehicles);
         });
     });
@@ -115,14 +119,14 @@ describe('VehicleService', () => {
     describe('4 - findOne method', () => {
         it('4.1 - should return an error when there is not a vehicles', async () => {
             mockVehicleRepository.findOne.mockResolvedValueOnce(null);
-            const response = async () => await service.findOne(1);
+            const response = async () => await service.findVehicleById(1);
             expect(response).rejects.toThrow('Not found vehicle id 1');
         });
         it('4.2 - should return a drivers', async () => {
             mockVehicleRepository.findOne.mockResolvedValueOnce(
                 mockVehicles[0],
             );
-            const response = await service.findOne(1);
+            const response = await service.findVehicleById(1);
             expect(response).toStrictEqual(mockVehicles[0]);
         });
     });
@@ -134,13 +138,13 @@ describe('VehicleService', () => {
             );
             const error =
                 'Finalize the link between the driver id 1 and the vehicle id 1 before deleting';
-            const response = async () => await service.remove(1);
+            const response = async () => await service.removeVehicle(1);
             expect(response).rejects.toThrow(error);
         });
         it('5.2 - should return a message "Deleted successfully the vehicle id"', async () => {
             mockVehicleRepository.findOne.mockResolvedValueOnce(null);
             mockVehicleRepository.softDelete.mockResolvedValueOnce(true);
-            const response = await service.remove(1);
+            const response = await service.removeVehicle(1);
             expect(response).toStrictEqual(
                 'Deleted successfully the vehicle id 1',
             );

@@ -38,7 +38,9 @@ describe('VehicleRepository', () => {
                 getMany: jest.fn().mockReturnValue(mockVehicles),
             }));
 
-            const response = await repository.searchVehicle(mockFilterVehicle);
+            const response = await repository.findVehicleByFilters(
+                mockFilterVehicle,
+            );
             expect(response).toStrictEqual(mockVehicles);
         });
     });

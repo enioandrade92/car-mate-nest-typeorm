@@ -13,10 +13,12 @@ import { IsNull, Repository } from 'typeorm';
 import { FilterVehicleDto } from './dto/filter-vehicle.dto';
 import { VehicleRepository } from './repository/vehicle.repository';
 import { VehicleAssignment } from '../vehicle-assignment/entities/vehicle-assignment.entity';
+import { BaseRepository } from '../base-repository';
 
 @Injectable()
 export class VehicleService {
     private readonly logger = new Logger(VehicleService.name);
+    private repository = new BaseRepository(this.vehicleRepository);
     constructor(
         @InjectRepository(Vehicle)
         private vehicleRepository: Repository<Vehicle>,
@@ -24,8 +26,8 @@ export class VehicleService {
         private vehicleCustomRepository: VehicleRepository,
         @InjectRepository(VehicleAssignment)
         private vehicleAssignmentRepository: Repository<VehicleAssignment>,
-    ) { }
-    async create(createVehicle: CreateVehicleDto) {
+    ) {}
+    async createVehicle(createVehicle: CreateVehicleDto) {
         try {
             const existVehicle = await this.vehicleRepository.findOne({
                 where: { plate: createVehicle.plate },
@@ -35,9 +37,7 @@ export class VehicleService {
                     `Already exists the vehicle plate ${existVehicle.plate}`,
                 );
             }
-            const createdVehicle = await this.vehicleRepository.save(
-                createVehicle,
-            );
+            const createdVehicle = await this.repository.create(createVehicle);
             this.logger.log(
                 `Created successfully the vehicle id ${createdVehicle.id}`,
             );
@@ -53,18 +53,16 @@ export class VehicleService {
         }
     }
 
-    async update(id: number, updateVehicle: UpdateVehicleDto) {
+    async updateVehicle(id: number, updateVehicle: UpdateVehicleDto) {
         try {
-            const vehicle = await this.vehicleRepository.findOne({
-                where: { id },
-            });
+            const vehicle = await this.repository.findById(id);
             if (!vehicle) {
                 throw new BadRequestException(`Not found vehicle id ${id}`);
             }
-            const updatedVehicle = await this.vehicleRepository.save({
-                ...vehicle,
-                ...updateVehicle,
-            });
+            const updatedVehicle = await this.repository.update(
+                vehicle,
+                updateVehicle,
+            );
             this.logger.log(`Updated successfully the vehicle: ${vehicle.id}`);
             return updatedVehicle;
         } catch (error) {
@@ -78,9 +76,11 @@ export class VehicleService {
         }
     }
 
-    async findAll(filters?: FilterVehicleDto) {
+    async findVehicleByFilters(filters?: FilterVehicleDto) {
         try {
-            return await this.vehicleCustomRepository.searchVehicle(filters);
+            return await this.vehicleCustomRepository.findVehicleByFilters(
+                filters,
+            );
         } catch (error) {
             this.logger.error(
                 `Failed to find the vehicle. Error: ${error.message}.`,
@@ -92,11 +92,9 @@ export class VehicleService {
         }
     }
 
-    async findOne(id: number) {
+    async findVehicleById(id: number) {
         try {
-            const vehicle = await this.vehicleRepository.findOne({
-                where: { id },
-            });
+            const vehicle = await this.repository.findById(id);
             if (!vehicle) {
                 throw new BadRequestException(`Not found vehicle id ${id}`);
             }
@@ -113,7 +111,7 @@ export class VehicleService {
         }
     }
 
-    async remove(id: number) {
+    async removeVehicle(id: number) {
         try {
             const register = await this.vehicleAssignmentRepository.findOne({
                 where: {

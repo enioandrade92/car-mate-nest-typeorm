@@ -133,7 +133,7 @@ export class VehicleAssignmentService {
     async findByVehicleId(vehicleId: number) {
         try {
             return await this.vehicleAssignmentRepository.find({
-                where: { driver: { id: vehicleId } },
+                where: { vehicle: { id: vehicleId } },
                 relations: { driver: true, vehicle: true },
                 order: { id: 'DESC' },
             });

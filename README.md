@@ -104,7 +104,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - Regras: 
     - Não é possível cadastrar o mesmo motorista;
 
-- Payload: 
+- Payload:
+ 
     ```json
     {
         "name": "Jack"
@@ -112,6 +113,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 
 - Response:
+
     ```json
     {
         "name": "Jack",
@@ -126,12 +128,13 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 ####  2 - Atualizar motorista
 - (PUT): `http://localhost:3000/driver/:id`
 <details>
-- Payload: 
+- Payload:
+
     ```json
     {
         "name": "Big Jack"
     }
-    ``` 
+    ```
 
 - Response:
     ```json
@@ -149,6 +152,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/driver/:id`
 <details>
 - Response:
+
     ```json
     {
         "name": "Big Jack",
@@ -165,6 +169,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/driver?page=1&limit=10`
 <details>
 - Response:
+
     ```json
     {
         "items": 
@@ -196,6 +201,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/driver?name=ja`
 <details>
 - Response:
+
     ```json
     [
         {
@@ -228,6 +234,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     - Não é possível cadastrar mais de um carro com a mesma placa;
 
 - Payload: 
+
     ```json
     {
         "brand":"Fiat",
@@ -238,6 +245,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 
 - Response:
+
     ```json
     {
         "brand": "Fiat",
@@ -259,7 +267,8 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - Regras: 
     - Não é possível cadastrar mais de um carro com a mesma placa;
 
-- Payload: 
+- Payload:
+
     ```json
     {
         "color":"blue",
@@ -267,6 +276,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 
 - Response:
+
     ```json
     {
         "brand": "Fiat",
@@ -286,6 +296,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/vehicle/:id`
 <details>
 - Response:
+
     ```json
     {
         "brand": "Fiat",
@@ -305,6 +316,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/vehicle`
 <details>
 - Response:
+
     ```json
     [
         {
@@ -328,6 +340,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/vehicle?color=blue&brand=fiat`
 <details>
 - Response:
+
     ```json
     [
         {
@@ -371,6 +384,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 
 - Response:
+
     ```json
     {
         "vehicle": {
@@ -402,6 +416,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (PUT): `http://localhost:3000/vehicle-assignment`
 <details>
 - Payload:
+
     ```json
     {
         "driverId": 1,
@@ -410,6 +425,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
     ``` 
 
 - Response:
+
     ```json
     {
         "vehicle": {
@@ -441,6 +457,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/vehicle-assignment/driver/1`
 <details>
 - Response:
+
     ```json
     [
         {
@@ -497,6 +514,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/vehicle-assignment/vehicle/1`
 <details>
 - Response:
+
     ```json
     [
         {
@@ -553,6 +571,7 @@ Uma aplicação back-end onde é possível cadastrar, editar e buscar veículos 
 - (GET): `http://localhost:3000/vehicle-assignment/vehicle?name=Jack`
 <details>
 - Response:
+
     ```json
     [
         {

@@ -43,14 +43,15 @@ describe('DriverService', () => {
     describe('1 - create method', () => {
         it('1.1 - should return an error when there is a driver with the name', async () => {
             mockDriverRepository.findOne.mockReturnValueOnce(mockDriver[0]);
-            const response = async () => await service.create(mockCreateDriver);
+            const response = async () =>
+                await service.createDriver(mockCreateDriver);
             expect(response).rejects.toThrow('Already exists the driver: Jack');
         });
 
         it('1.2 - should return a created driver', async () => {
             mockDriverRepository.findOne.mockReturnValueOnce(null);
             mockDriverRepository.save.mockReturnValueOnce(mockDriver[0]);
-            const response = await service.create(mockCreateDriver);
+            const response = await service.createDriver(mockCreateDriver);
             expect(response).toStrictEqual(mockDriver[0]);
         });
     });
@@ -59,7 +60,7 @@ describe('DriverService', () => {
         it('2.1 - should return an error when there is not a driver', async () => {
             mockDriverRepository.findOne.mockReturnValueOnce(null);
             const response = async () =>
-                await service.update(1, mockUpdateDriver);
+                await service.updateDriver(1, mockUpdateDriver);
             expect(response).rejects.toThrow('Not found driver id 1');
         });
         it('2.2 - should return a updated driver', async () => {
@@ -68,7 +69,7 @@ describe('DriverService', () => {
                 ...mockDriver[0],
                 ...mockUpdateDriver,
             });
-            const response = await service.update(1, mockUpdateDriver);
+            const response = await service.updateDriver(1, mockUpdateDriver);
             expect(response).toStrictEqual({
                 ...mockDriver[0],
                 ...mockUpdateDriver,
@@ -78,19 +79,21 @@ describe('DriverService', () => {
 
     describe('3 - findAll method', () => {
         it('3.1 - when return an error', async () => {
-            mockDriverRepository.searchDriver.mockRejectedValueOnce(
+            mockDriverRepository.findDriverByFilters.mockRejectedValueOnce(
                 'Error test',
             );
             const response = async () =>
-                await service.findAll(mockFilterDriver);
+                await service.findDriverByFilters(mockFilterDriver);
             expect(response).rejects.toThrow(HttpException);
         });
         it('3.2 - should return a drivers', async () => {
-            mockDriverRepository.searchDriver.mockResolvedValueOnce(
+            mockDriverRepository.findDriverByFilters.mockResolvedValueOnce(
                 mockPaginateDrivers,
             );
 
-            const response = await service.findAll(mockFilterDriver);
+            const response = await service.findDriverByFilters(
+                mockFilterDriver,
+            );
             expect(response).toStrictEqual(mockPaginateDrivers);
         });
     });
@@ -98,12 +101,12 @@ describe('DriverService', () => {
     describe('4 - findOne method', () => {
         it('4.1 - should return an error when there is not a driver', async () => {
             mockDriverRepository.findOne.mockResolvedValueOnce(null);
-            const response = async () => await service.findOne(1);
+            const response = async () => await service.findDriverById(1);
             expect(response).rejects.toThrow('Not found driver id 1');
         });
         it('4.2 - should return a drivers', async () => {
             mockDriverRepository.findOne.mockResolvedValueOnce(mockDriver[0]);
-            const response = await service.findOne(1);
+            const response = await service.findDriverById(1);
             expect(response).toStrictEqual(mockDriver[0]);
         });
     });
@@ -115,13 +118,13 @@ describe('DriverService', () => {
             );
             const error =
                 'Finalize the link between the driver id 1 and the vehicle id 1 before deleting';
-            const response = async () => await service.remove(1);
+            const response = async () => await service.removeDriver(1);
             expect(response).rejects.toThrow(error);
         });
         it('5.2 - should return a message "Deleted successfully the driver id"', async () => {
             mockDriverRepository.findOne.mockResolvedValueOnce(null);
             mockDriverRepository.softDelete.mockResolvedValueOnce(true);
-            const response = await service.remove(1);
+            const response = await service.removeDriver(1);
             expect(response).toStrictEqual(
                 'Deleted successfully the driver id 1',
             );
