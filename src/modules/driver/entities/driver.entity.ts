@@ -1,32 +1,32 @@
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+	Column,
+	CreateDateColumn,
+	DeleteDateColumn,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn,
 } from 'typeorm';
 import { VehicleAssignment } from '../../vehicle-assignment/entities/vehicle-assignment.entity';
 
 @Entity('drivers')
 export class Driver {
-    @PrimaryGeneratedColumn()
-    id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @Column('text', { default: null })
-    name: string;
+	@Column('text', { default: null })
+	name: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+	@CreateDateColumn()
+	createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+	@UpdateDateColumn()
+	updatedAt: Date;
 
-    @DeleteDateColumn({ default: null })
-    deletedAt: Date;
+	@DeleteDateColumn({ default: null })
+	deletedAt: Date;
 
-    @OneToMany(() => VehicleAssignment, (assignment) => assignment.driver)
-    assignments: VehicleAssignment[];
+	@OneToMany(() => VehicleAssignment, assignment => assignment.driver)
+	assignments: VehicleAssignment[];
 }

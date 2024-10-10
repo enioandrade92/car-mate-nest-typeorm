@@ -14,7 +14,6 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 import { FilterDriverDto } from './dto/filter-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { UserFromSession } from '../auth/decorators/user-from-session.decorator';
 
 @UseGuards(JwtAuthGuard)
 @Controller('driver')
@@ -22,11 +21,7 @@ export class DriverController {
 	constructor(private readonly driverService: DriverService) {}
 
 	@Post()
-	async createDriver(
-		@Body() createDriverDto: CreateDriverDto,
-		@UserFromSession('user') user: any,
-	) {
-		console.log(user);
+	async createDriver(@Body() createDriverDto: CreateDriverDto) {
 		return this.driverService.createDriver(createDriverDto);
 	}
 

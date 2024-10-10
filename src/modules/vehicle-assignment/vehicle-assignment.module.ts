@@ -7,8 +7,8 @@ import { Driver } from '../driver/entities/driver.entity';
 import { VehicleAssignment } from './entities/vehicle-assignment.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([VehicleAssignment, Driver, Vehicle])],
-    controllers: [VehicleAssignmentController],
-    providers: [VehicleAssignmentService],
+	imports: [TypeOrmModule.forFeature([VehicleAssignment, Driver, Vehicle])],
+	controllers: [VehicleAssignmentController],
+	providers: [VehicleAssignmentService],
 })
-export class VehicleAssignmentModule { }
+export class VehicleAssignmentModule {}

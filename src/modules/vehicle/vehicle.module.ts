@@ -7,8 +7,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { VehicleAssignment } from '../vehicle-assignment/entities/vehicle-assignment.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Vehicle, VehicleAssignment])],
-    controllers: [VehicleController],
-    providers: [VehicleService, VehicleRepository],
+	imports: [TypeOrmModule.forFeature([Vehicle, VehicleAssignment])],
+	controllers: [VehicleController],
+	providers: [VehicleService, VehicleRepository],
 })
 export class VehicleModule {}
